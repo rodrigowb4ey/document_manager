@@ -13,7 +13,7 @@ class Document(models.Model):
     name = models.TextField(max_length=80)
     content = models.FileField(upload_to="media/%Y/%m/%d")
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(editable=False, default=datetime.now(), blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __repr__(self):
         return f'Document(name={self.name}, owner={self.owner}, content={self.content}, created_at={self.created_at}, uuid={self.uuid})'

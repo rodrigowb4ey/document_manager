@@ -16,15 +16,15 @@ class DocumentModelTestCase(TestCase):
             "test_file.pdf",
             b"test content"
         )
-        
-        self.test_document = Document(
+
+    def test_valid_data_creates_document_instance(self):
+        """Test that checks if a Document instance is created when valid data is given."""
+        test_document = Document(
             name="Test Document",
             content=self.test_file,
             owner=self.test_user,
         )
-
-    def test_valid_data_creates_document_instance(self):
-        """Test that checks if a Document instance is created when valid data is given."""
-        self.assertEqual(self.test_document.name, "Test Document")
-        self.assertEqual(self.test_document.owner.username, "testuser")
-        self.assertEqual(self.test_document.content, self.test_file)
+        self.assertTrue(test_document)
+        self.assertEqual(test_document.name, "Test Document")
+        self.assertEqual(test_document.owner.username, "testuser")
+        self.assertEqual(test_document.content, self.test_file)

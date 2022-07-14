@@ -5,4 +5,4 @@ from django.contrib.auth.models import User
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'is_superuser']
+        fields = ['url', 'id', 'username', 'is_superuser']

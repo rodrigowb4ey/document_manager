@@ -7,4 +7,4 @@ class DocumentSerializer(serializers.HyperlinkedModelSerializer):
     
     class Meta:
         model = Document
-        fields = ['uuid', 'name', 'content', 'owner', 'created_at']
+        fields = ['url', 'uuid', 'name', 'content', 'owner', 'created_at']
