@@ -15,21 +15,29 @@ class DocumentModelTestCase(TestCase):
 
         self.test_file = SimpleUploadedFile("test_file.pdf", b"test content")
 
-    def test_valid_data_creates_document_instance(self):
-        test_document = Document(
+        self.test_document = Document(
             name="Test Document",
             content=self.test_file,
             owner=self.test_user,
         )
-        self.assertTrue(test_document)
-        self.assertEqual(test_document.name, "Test Document")
-        self.assertEqual(test_document.owner.username, "testuser")
-        self.assertEqual(test_document.content, self.test_file)
 
-    def test_document_data_missing_name(self):
-        invalid_document = Document(
-            content=self.test_file,
-            owner=self.test_user,
+    def test_valid_data_creates_document_instance(self):
+        self.assertTrue(self.test_document)
+        self.assertEqual(self.test_document.name, "Test Document")
+        self.assertEqual(self.test_document.owner.username, "testuser")
+        self.assertEqual(self.test_document.content, self.test_file)
+
+    def test_document_repr_method(self):
+        self.assertEqual(
+            repr(self.test_document),
+            (
+                f"Document(name={self.test_document.name}, "
+                f"owner={self.test_document.owner}, "
+                f"content={self.test_document.content}, "
+                f"created_at={self.test_document.created_at}, "
+                f"uuid={self.test_document.uuid})"
+            ),
         )
-        print("============>", invalid_document)
-        self.assertTrue(invalid_document)
+
+    def test_document_str_method(self):
+        self.assertEqual(str(self.test_document), self.test_document.name)
