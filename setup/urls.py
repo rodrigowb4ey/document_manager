@@ -20,11 +20,13 @@ from django.urls import include, path
 from rest_framework import routers
 
 from document.views import DocumentViewSet
+from folder.views import FolderViewSet
 from user.views import UserViewSet
 
 router = routers.DefaultRouter()
 router.register(r"users", UserViewSet)
 router.register(r"documents", DocumentViewSet)
+router.register(r"folders", FolderViewSet)
 
 urlpatterns = (
     [

@@ -1,3 +1,9 @@
-# from django.shortcuts import render
+from rest_framework import viewsets
 
-# Create your views here.
+from folder.models import Folder
+from folder.serializers import FolderSerializer
+
+
+class FolderViewSet(viewsets.ModelViewSet):
+    queryset = Folder.objects.all()
+    serializer_class = FolderSerializer
