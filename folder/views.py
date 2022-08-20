@@ -1,5 +1,9 @@
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
+from document.models import Document
+from document.serializers import DocumentSerializer
 from folder.models import Folder
 from folder.serializers import FolderSerializer
 
@@ -7,3 +11,14 @@ from folder.serializers import FolderSerializer
 class FolderViewSet(viewsets.ModelViewSet):
     queryset = Folder.objects.all()
     serializer_class = FolderSerializer
+
+    @action(detail=True, serializer_class=DocumentSerializer)
+    def documents(self, request, pk=None, *args, **kwargs):
+        serializer_context = {"request": request}
+        folder = self.get_object()
+        documents_inside_folder = Document.objects.filter(folder=folder)
+        documents_serialized = self.get_serializer(
+            documents_inside_folder, many=True, context=serializer_context
+        )
+
+        return Response(documents_serialized.data)
