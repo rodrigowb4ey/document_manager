@@ -25,6 +25,7 @@ class Document(models.Model):
             f"Document(name={self.name}, "
             f"owner={self.owner}, "
             f"content={self.content}, "
+            f"folder={self.folder}, "
             f"created_at={self.created_at}, "
             f"uuid={self.uuid})"
         )
