@@ -1,3 +1,5 @@
+from django_filters import rest_framework as filters
+from rest_framework import filters as restfilters
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -11,6 +13,14 @@ from folder.serializers import FolderSerializer
 class FolderViewSet(viewsets.ModelViewSet):
     queryset = Folder.objects.all()
     serializer_class = FolderSerializer
+    filter_backends = (
+        restfilters.SearchFilter,
+        filters.DjangoFilterBackend,
+    )
+    filterset_fields = ["uuid", "name", "owner", "created_at"]
+    search_fields = [
+        "name",
+    ]
 
     @action(detail=True, serializer_class=DocumentSerializer)
     def documents(self, request, pk=None, *args, **kwargs):
