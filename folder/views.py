@@ -8,12 +8,13 @@ from document.models import Document
 from document.serializers import DocumentSerializer
 from folder.models import Folder
 from folder.serializers import FolderSerializer
+from utils.permissions import isOwner
 
 
 class FolderViewSet(viewsets.ModelViewSet):
     queryset = Folder.objects.all()
     serializer_class = FolderSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, isOwner]
     filter_backends = (
         restfilters.SearchFilter,
         filters.DjangoFilterBackend,
@@ -22,6 +23,18 @@ class FolderViewSet(viewsets.ModelViewSet):
     search_fields = [
         "name",
     ]
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset().filter(owner=request.user)
+        filtered_queryset = self.filter_queryset(queryset)
+
+        page = self.paginate_queryset(filtered_queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(filtered_queryset, many=True)
+        return Response(serializer.data)
 
     @action(detail=True, serializer_class=DocumentSerializer)
     def documents(self, request, pk=None, *args, **kwargs):
