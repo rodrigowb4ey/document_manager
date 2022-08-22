@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 from rest_framework import filters as restfilters
-from rest_framework import viewsets
+from rest_framework import permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -13,6 +13,7 @@ from folder.serializers import FolderSerializer
 class FolderViewSet(viewsets.ModelViewSet):
     queryset = Folder.objects.all()
     serializer_class = FolderSerializer
+    permission_classes = [permissions.IsAuthenticated]
     filter_backends = (
         restfilters.SearchFilter,
         filters.DjangoFilterBackend,
