@@ -28,6 +28,8 @@ DEBUG = int(os.environ.get("DEBUG", default=0))
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
+SITE_ID = 1
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,6 +42,13 @@ INSTALLED_APPS = [
     "django_extensions",
     "django_filters",
     "rest_framework",
+    "rest_framework.authtoken",
+    "dj_rest_auth",
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "dj_rest_auth.registration",
     "document",
     "folder",
     "utils",
@@ -143,5 +152,27 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend"
-    ]
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+    ],
 }
+
+REST_USE_JWT = True
+
+JWT_AUTH_COOKIE = "my-app-auth"
+
+AUTHENTICATION_BACKENDS = [
+    "allauth.account.auth_backends.AuthenticationBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+LOGIN_URL = "http://localhost:8000/login/"
+
+# E-mail back-end for development convenience
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
